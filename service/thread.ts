@@ -23,3 +23,25 @@ export async function getAllThread(): Promise<Thread[]> {
         throw error;
     }
 }
+
+export async function getDetailThread(threadId: string): Promise<Thread> {
+    try {
+        const resp = await fetch(`${BASE_URL}/threads/${threadId}`, {
+            method: "GET",
+            headers: {
+                Accept: 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+            }
+        })
+
+        if (!resp.ok) {
+            throw new Error(`HTTP Error: ${resp.status}`);
+        }
+
+        const respData = await resp.json()
+        return respData.data.detailThread
+    } catch (error) {
+        console.error("Failed to fetch threads:", error);
+        throw error;
+    }
+}

@@ -1,5 +1,9 @@
 import { ArrowDown, ArrowUp, User } from "lucide-react";
 
+interface DetailCardProps{
+    threadDetail: 
+}
+
 export default function DetailCard() {
     return (
         <div className="py-5 px-3">
