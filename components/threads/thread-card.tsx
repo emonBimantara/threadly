@@ -50,6 +50,7 @@ export default function ThreadCard({ threadsData }: ThreadCardProps) {
                     <img
                         src={threadsData.owner.avatar}
                         alt={threadsData.owner.name}
+                        className="w-10 h-10 rounded-full object-cover"
                     />
 
                     <p className="font-medium text-gray-800">{threadsData.owner.name}</p>

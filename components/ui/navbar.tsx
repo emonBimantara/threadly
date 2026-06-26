@@ -8,7 +8,7 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <nav className="flex px-6 py-4 lg:py-2 justify-between items-center border-b-4 border-gray-100">
+        <nav className="flex px-6 py-4 lg:py-2 justify-between items-center border-b-4 border-gray-100 bg-white">
             <div className="flex gap-2 items-center">
                 <img
                     src="/icon.png"

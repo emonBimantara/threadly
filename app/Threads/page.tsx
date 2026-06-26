@@ -9,6 +9,7 @@ import Footer from "@/components/ui/footer";
 
 import { getAllThread } from "@/service/thread";
 import { getAllUser } from "@/service/user";
+import Link from "next/link";
 
 export default async function Threads() {
     const threads = await getAllThread()
@@ -28,10 +29,12 @@ export default async function Threads() {
                     <SearchBar />
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-4 cursor-pointer">
                     {threadWithOwner.length > 0 ? (
                         threadWithOwner.map((thread: any) => (
-                            <ThreadCard key={thread.id} threadsData={thread} />
+                            <Link key={thread.id} href={`/Threads/${thread.id}`}>
+                                <ThreadCard threadsData={thread} />
+                            </Link>
                         ))
                     ) : (
                         <p className="text-gray-500">
@@ -67,10 +70,12 @@ export default async function Threads() {
                         </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-4 cursor-pointer">
                         {threadWithOwner.length > 0 ? (
                             threadWithOwner.map((thread: any) => (
-                                <ThreadCard key={thread.id} threadsData={thread} />
+                                <Link key={thread.id} href={`/Threads/${thread.id}`}>
+                                    <ThreadCard threadsData={thread} />
+                                </Link>
                             ))
                         ) : (
                             <p className="text-gray-500">
