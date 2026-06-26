@@ -1,48 +1,39 @@
-import { ArrowDown, ArrowUp, User } from "lucide-react";
+import { ThreadDetail } from "@/types/thread";
+import { getRelativeTime } from "@/utils/date";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
-interface DetailCardProps{
-    threadDetail: 
+interface DetailCardProps {
+    threadDetail: ThreadDetail
 }
 
-export default function DetailCard() {
+export default function DetailCard({ threadDetail }: DetailCardProps) {
     return (
         <div className="py-5 px-3">
             <div className=" flex flex-col gap-4 p-5 border border-gray-300 bg-white rounded-md">
                 <div className="flex justify-between items-center">
 
                     <div className="flex gap-2 items-center">
-                        <User size={30} />
+                        <img
+                            src={threadDetail.owner.avatar}
+                            alt={threadDetail.owner.name}
+                            className="w-10 h-10 rounded-full object-cover"
+                        />
 
                         <div>
-                            <p className="font-medium">Febriane Valentina</p>
-                            <p className="text-gray-400">October 24, 2024 at 10:30AM</p>
+                            <p className="font-medium">{threadDetail.owner.name}</p>
+                            <p className="text-gray-400">{getRelativeTime(threadDetail.createdAt)}</p>
                         </div>
                     </div>
 
 
                     <div className="rounded-sm bg-indigo-100 text-indigo-700 px-2 py-1 text-sm font-medium">
-                        React
+                        {threadDetail.category}
                     </div>
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    <h1 className="font-semibold text-2xl">Best Practices for Microservices Event Sourcing</h1>
-                    <p className="text-[#464555] text-md">
-                        I'm currently designing a new
-                        microservices architecture and we are
-                        leaning heavily towards event sourcing.
-                        However, I'm concerned about the
-                        complexity of managing schema
-                        evolution and snapshotting large event
-                        streams.
-
-                        Does anyone have production
-                        experience with managing these
-                        specific challenges? We are considering
-                        Kafka for the event log and PostgreSQL
-                        for read projections, but the operational
-                        overhead seems daunting.
-                    </p>
+                    <h1 className="font-semibold text-2xl">{threadDetail.title}</h1>
+                    <p className="text-[#464555] text-md">{threadDetail.body}</p>
                     <hr />
                 </div>
 
@@ -53,7 +44,7 @@ export default function DetailCard() {
                             className="text-gray-700 hover:text-green-600"
                         />
 
-                        <span className="font-semibold text-black">0</span>
+                        <span className="font-semibold text-black">{threadDetail.upVotesBy.length}</span>
 
                         <ArrowDown
                             size={18}

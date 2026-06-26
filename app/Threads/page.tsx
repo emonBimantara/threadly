@@ -20,6 +20,8 @@ export default async function Threads() {
         owner: users.find((user) => user.id === thread.ownerId)
     }))
 
+    const categories = [...new Set(threads.map((thread) => thread.category))];
+
     return (
         <div className="min-h-screen bg-[#F9F9FF]">
             <Navbar />
@@ -50,24 +52,14 @@ export default async function Threads() {
                         <CirclePlus size={20} />
                         Create New Thread
                     </Button>
-                    <CategoryBox />
+                    <CategoryBox categories={categories} />
                 </aside>
 
                 <main className="flex-1 min-w-0">
-                    <div className="mb-5 flex items-center justify-between">
+                    <div className="mb-5">
                         <h1 className="text-2xl font-bold">
                             Latest Discussions
                         </h1>
-
-                        <div className="flex gap-2">
-                            <span className="cursor-pointer rounded-md bg-indigo-100 px-3 py-1 text-sm text-indigo-700">
-                                New
-                            </span>
-
-                            <span className="cursor-pointer rounded-md bg-gray-100 px-3 py-1 text-sm text-gray-700">
-                                Old
-                            </span>
-                        </div>
                     </div>
 
                     <div className="space-y-4 cursor-pointer">
@@ -85,7 +77,6 @@ export default async function Threads() {
                     </div>
                 </main>
             </div>
-            <Footer />
         </div>
     );
 }

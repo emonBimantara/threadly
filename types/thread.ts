@@ -1,3 +1,4 @@
+import { Comment } from "./comment";
 import { User } from "./user";
 
 export interface Thread {
@@ -12,6 +13,14 @@ export interface Thread {
     totalComments: number;
 }
 
+export interface GetThreadsResponse {
+    status: string;
+    message: string;
+    data: {
+        threads: Thread[];
+    };
+}
+
 export interface ThreadDetail {
     id: string;
     title: string;
@@ -22,14 +31,6 @@ export interface ThreadDetail {
     upVotesBy: string[];
     downVotesBy: string[];
     comments: Comment[];
-}
-
-export interface GetThreadsResponse {
-    status: string;
-    message: string;
-    data: {
-        threads: Thread[];
-    };
 }
 
 export interface GetThreadDetailResponse {

@@ -12,3 +12,11 @@ export function getRelativeTime(dateString: string): string {
     if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`
     return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`
 }
+
+export function formatDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+}

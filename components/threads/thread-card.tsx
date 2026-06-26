@@ -1,7 +1,6 @@
 import { ThreadWithOwner } from "@/types/thread-owner";
 import { getRelativeTime } from "@/utils/date";
 import {
-    User,
     EllipsisVertical,
     ArrowUp,
     ArrowDown,
@@ -14,7 +13,7 @@ interface ThreadCardProps {
 
 export default function ThreadCard({ threadsData }: ThreadCardProps) {
     return (
-        <div className="rounded-md border border-gray-300 bg-white p-4 transition-all hover:border-gray-400 hover:shadow-sm">
+        <div className="rounded-md border border-gray-300 bg-white p-4 transition-all hover:border-gray-400 hover:shadow-sm mb-5">
             <div>
                 <div className="flex items-start justify-between gap-3">
                     <h1 className="flex-1 text-xl font-bold text-black line-clamp-2">
@@ -63,7 +62,7 @@ export default function ThreadCard({ threadsData }: ThreadCardProps) {
                             className="text-gray-700 hover:text-green-600"
                         />
 
-                        <span className="font-semibold text-black">0</span>
+                        <span className="font-semibold text-black">{threadsData.upVotesBy.length}</span>
 
                         <ArrowDown
                             size={18}
