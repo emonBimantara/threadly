@@ -1,3 +1,5 @@
+import { ThreadWithOwner } from "@/types/thread-owner";
+import { getRelativeTime } from "@/utils/date";
 import {
     User,
     EllipsisVertical,
@@ -7,19 +9,10 @@ import {
 } from "lucide-react";
 
 interface ThreadCardProps {
-    threadsData: {
-        id: string,
-        title: string,
-        body: string,
-        category: string,
-        createdAt: string,
-        upVotesBy: string[],
-        downVotesBy: string[],
-        totalComments: number
-    }
+    threadsData: ThreadWithOwner
 }
 
-export default function ThreadCard({ threadsData } : ThreadCardProps) {
+export default function ThreadCard({ threadsData }: ThreadCardProps) {
     return (
         <div className="rounded-md border border-gray-300 bg-white p-4 transition-all hover:border-gray-400 hover:shadow-sm">
             <div>
@@ -47,19 +40,20 @@ export default function ThreadCard({ threadsData } : ThreadCardProps) {
                     </span>
                 </div>
 
-                <span className="text-sm text-gray-500">{threadsData.createdAt}</span>
+                <span className="text-sm text-gray-500">{getRelativeTime(threadsData.createdAt)}</span>
             </div>
 
             <div className="my-4 border-t border-gray-200" />
 
             <div className="flex items-center justify-between">
-                {/* <div className="flex items-center gap-3">
-                    <User size={18} />
+                <div className="flex items-center gap-3">
+                    <img
+                        src={threadsData.owner.avatar}
+                        alt={threadsData.owner.name}
+                    />
 
-                    <p className="font-medium text-gray-800">
-                        Febriane Valentina
-                    </p>
-                </div> */}
+                    <p className="font-medium text-gray-800">{threadsData.owner.name}</p>
+                </div>
 
                 <div className="flex items-center gap-2">
                     <button className="flex items-center gap-3 rounded-md bg-indigo-100 px-3 py-2 transition hover:bg-indigo-200">
@@ -68,9 +62,7 @@ export default function ThreadCard({ threadsData } : ThreadCardProps) {
                             className="text-gray-700 hover:text-green-600"
                         />
 
-                        <span className="font-semibold text-black">
-                            {threadsData.totalComments}
-                        </span>
+                        <span className="font-semibold text-black">0</span>
 
                         <ArrowDown
                             size={18}

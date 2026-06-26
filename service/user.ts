@@ -1,10 +1,10 @@
-import { Thread } from "@/types/thread";
+import { User } from "@/types/user";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function getAllThread(): Promise<Thread[]> {
+export async function getAllUser(): Promise<User[]> {
     try {
-        const resp = await fetch(`${BASE_URL}/threads`, {
+        const resp = await fetch(`${BASE_URL}/users`, {
             method: "GET",
             headers: {
                 Accept: 'application/json',
@@ -12,14 +12,14 @@ export async function getAllThread(): Promise<Thread[]> {
             }
         })
 
-        if (!resp.ok) {
+        if(!resp.ok){
             throw new Error(`HTTP Error: ${resp.status}`);
         }
 
         const respData = await resp.json()
-        return respData.data.threads
+        return respData.data.users
     } catch (error) {
-        console.error("Failed to fetch threads:", error);
+        console.error("Failed to fetch users:", error);
         throw error;
     }
 }

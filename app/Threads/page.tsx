@@ -6,10 +6,18 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import CategoryBox from "@/components/threads/category-box";
 import Footer from "@/components/ui/footer";
+
 import { getAllThread } from "@/service/thread";
+import { getAllUser } from "@/service/user";
 
 export default async function Threads() {
-    const threads = await getAllThread();
+    const threads = await getAllThread()
+    const users = await getAllUser()
+
+    const threadWithOwner = threads.map((thread) => ({
+        ...thread,
+        owner: users.find((user) => user.id === thread.ownerId)
+    }))
 
     return (
         <div className="min-h-screen bg-[#F9F9FF]">
@@ -21,8 +29,8 @@ export default async function Threads() {
                 </div>
 
                 <div className="space-y-4">
-                    {threads.length > 0 ? (
-                        threads.map((thread: any) => (
+                    {threadWithOwner.length > 0 ? (
+                        threadWithOwner.map((thread: any) => (
                             <ThreadCard key={thread.id} threadsData={thread} />
                         ))
                     ) : (
@@ -60,8 +68,8 @@ export default async function Threads() {
                     </div>
 
                     <div className="space-y-4">
-                        {threads.length > 0 ? (
-                            threads.map((thread: any) => (
+                        {threadWithOwner.length > 0 ? (
+                            threadWithOwner.map((thread: any) => (
                                 <ThreadCard key={thread.id} threadsData={thread} />
                             ))
                         ) : (

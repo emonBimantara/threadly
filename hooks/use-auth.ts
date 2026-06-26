@@ -19,7 +19,11 @@ export function useAuth() {
         setSuccessMsg('')
 
         try {
-            await register(username, email, password);
+            await register({
+                name: username,
+                email,
+                password
+            });
 
             setSuccessMsg('Account created successfully. Please sign in to continue.');
 
@@ -43,9 +47,9 @@ export function useAuth() {
         setSuccessMsg('')
 
         try {
-            const respData = await login(email, password)
-            if (respData && respData.token) {
-                localStorage.setItem('accessToken', respData.token);
+            const respData = await login({ email, password })
+            if (respData.data.token) {
+                localStorage.setItem("accessToken", respData.data.token);
             }
 
             router.push('/Threads')
