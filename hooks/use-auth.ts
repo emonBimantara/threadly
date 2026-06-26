@@ -1,0 +1,96 @@
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+
+export function useAuth() {
+    const router = useRouter()
+
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [errorMsg, setErrorMsg] = useState('')
+    const [successMsg, setSuccessMsg] = useState('')
+
+    const handleRegister = async (callbackSuccess: () => void) => {
+        setIsLoading(true)
+        setErrorMsg('')
+        setSuccessMsg('')
+
+        try {
+            const resp = await fetch("https://forum-api.dicoding.dev/v1/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: username, email, password })
+            })
+
+            const respData = await resp.json()
+
+            if (respData.error) {
+                setErrorMsg(respData.message || 'Registration failed. Please try again.')
+            } else {
+                setSuccessMsg('Account created successfully. Please sign in to continue.')
+
+                setUsername('')
+                setEmail('')
+                setPassword('')
+
+                callbackSuccess()
+            }
+
+        } catch (error) {
+            setErrorMsg('An error occurred during registration.')
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleLogin = async () => {
+        setIsLoading(true)
+        setErrorMsg('')
+        setSuccessMsg('')
+
+        try {
+            const resp = await fetch("https://forum-api.dicoding.dev/v1/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            })
+
+            if (!resp.ok) {
+                let customError = 'Login failed'
+                try {
+                    const data = await resp.json()
+                    customError = data.message || customError
+                } catch (_) {
+                    customError = `Server Error (${resp.status})`
+                }
+                setErrorMsg(customError)
+                return
+            }
+
+            router.push('/Threads')
+            router.refresh()
+        } catch (error) {
+            setErrorMsg('Network error occurred while logging in. Please try again.')
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    return {
+        username,
+        setUsername,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        isLoading,
+        errorMsg,
+        successMsg,
+        handleRegister,
+        handleLogin
+    }
+}
