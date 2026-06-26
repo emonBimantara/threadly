@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import CategoryBox from "@/components/threads/category-box";
 import Footer from "@/components/ui/footer";
+import { getAllThread } from "@/service/thread";
 
-export default function Threads() {
+export default async function Threads() {
+    const threads = await getAllThread();
+
     return (
         <div className="min-h-screen bg-[#F9F9FF]">
             <Navbar />
@@ -18,9 +21,15 @@ export default function Threads() {
                 </div>
 
                 <div className="space-y-4">
-                    <ThreadCard />
-                    <ThreadCard />
-                    <ThreadCard />
+                    {threads.length > 0 ? (
+                        threads.map((thread: any) => (
+                            <ThreadCard key={thread.id} threadsData={thread} />
+                        ))
+                    ) : (
+                        <p className="text-gray-500">
+                            No threads yet. Go create your thread.
+                        </p>
+                    )}
                 </div>
             </div>
 
@@ -51,9 +60,15 @@ export default function Threads() {
                     </div>
 
                     <div className="space-y-4">
-                        <ThreadCard />
-                        <ThreadCard />
-                        <ThreadCard />
+                        {threads.length > 0 ? (
+                            threads.map((thread: any) => (
+                                <ThreadCard key={thread.id} threadsData={thread} />
+                            ))
+                        ) : (
+                            <p className="text-gray-500">
+                                No threads yet. Go create your thread.
+                            </p>
+                        )}
                     </div>
                 </main>
             </div>
