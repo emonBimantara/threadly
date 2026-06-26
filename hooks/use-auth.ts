@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { login, register } from '@/service/auth'
 
 export function useAuth() {
     const router = useRouter()
@@ -18,25 +19,15 @@ export function useAuth() {
         setSuccessMsg('')
 
         try {
-            const resp = await fetch("https://forum-api.dicoding.dev/v1/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: username, email, password })
-            })
+            await register(username, email, password);
 
-            const respData = await resp.json()
+            setSuccessMsg('Account created successfully. Please sign in to continue.');
 
-            if (respData.error) {
-                setErrorMsg(respData.message || 'Registration failed. Please try again.')
-            } else {
-                setSuccessMsg('Account created successfully. Please sign in to continue.')
+            setUsername('')
+            setEmail('')
+            setPassword('')
 
-                setUsername('')
-                setEmail('')
-                setPassword('')
-
-                callbackSuccess()
-            }
+            callbackSuccess()
 
         } catch (error) {
             setErrorMsg('An error occurred during registration.')
@@ -52,22 +43,9 @@ export function useAuth() {
         setSuccessMsg('')
 
         try {
-            const resp = await fetch("https://forum-api.dicoding.dev/v1/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            })
-
-            if (!resp.ok) {
-                let customError = 'Login failed'
-                try {
-                    const data = await resp.json()
-                    customError = data.message || customError
-                } catch (_) {
-                    customError = `Server Error (${resp.status})`
-                }
-                setErrorMsg(customError)
-                return
+            const respData = await login(email, password)
+            if (respData && respData.token) {
+                localStorage.setItem('accessToken', respData.token);
             }
 
             router.push('/Threads')
