@@ -2,13 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MenuIcon, User, X } from "lucide-react";
-import { useState } from "react";
+import { MenuIcon, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import SearchBar from "./search-bar";
+import { User } from "@/types/user";
+import { getOwnProfile } from "@/service/user";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [userIcon, setUserIcon] = useState<User | null>(null);
+
     const pathname = usePathname();
+
+    useEffect(() => {
+        getOwnProfile()
+            .then(setUserIcon)
+            .catch(console.error);
+    }, []);
 
     const navItem = (href: string) =>
         `relative pb-2 text-gray-700 transition-colors duration-300 hover:text-black
@@ -43,24 +53,15 @@ export default function Navbar() {
             </button>
 
             <div className="hidden lg:flex items-center gap-7 text-lg">
-                <Link
-                    href="/Threads"
-                    className={navItem("/Threads")}
-                >
+                <Link href="/Threads" className={navItem("/Threads")}>
                     Threads
                 </Link>
 
-                <Link
-                    href="/leaderboards"
-                    className={navItem("/leaderboards")}
-                >
+                <Link href="/leaderboards" className={navItem("/leaderboards")}>
                     Leaderboards
                 </Link>
 
-                <Link
-                    href="/users"
-                    className={navItem("/users")}
-                >
+                <Link href="/users" className={navItem("/users")}>
                     Users
                 </Link>
             </div>
@@ -68,9 +69,15 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-2">
                 <SearchBar />
 
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-100 bg-gray-50 text-gray-500">
-                    <User size={30} />
-                </div>
+                {userIcon ? (
+                    <img
+                        src={userIcon.avatar}
+                        alt={userIcon.name}
+                        className="h-10 w-10 rounded-full object-cover"
+                    />
+                ) : (
+                    <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse" />
+                )}
             </div>
 
             {isOpen && (

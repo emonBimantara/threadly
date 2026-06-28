@@ -1,7 +1,6 @@
 import CommentCard from "@/components/threads/comment-card";
 import CommentForm from "@/components/threads/comment-form";
 import DetailCard from "@/components/threads/detail-card";
-import Footer from "@/components/ui/footer";
 import Navbar from "@/components/ui/navbar";
 
 import { getDetailThread } from "@/service/thread";
@@ -36,8 +35,6 @@ export default async function ThreadDetail({ params }: ThreadDetailProps) {
                     ))}
                 </div>
             </div>
-
-            <Footer />
         </div>
     )
 }

@@ -23,3 +23,18 @@ export async function getAllUser(): Promise<User[]> {
         throw error;
     }
 }
+
+export async function getOwnProfile(): Promise<User>{
+    const token = localStorage.getItem("accessToken")
+
+    const resp = await fetch(`${BASE_URL}/users/me`, {
+        method: "GET",
+        headers:{Authorization: `Bearer ${token}`}
+    })
+    
+    const respData = await resp.json()
+    if (!resp.ok) {
+        throw new Error(respData.message);
+    }
+    return respData.data.user
+}

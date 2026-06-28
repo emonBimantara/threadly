@@ -30,9 +30,8 @@ export default function RootLayout({
     >
       <body className={`${geistSans.variable} font-sans min-h-full flex flex-col`}>
         {children}
+        <Footer />
       </body>
-
-      <Footer />
     </html>
   );
 }
