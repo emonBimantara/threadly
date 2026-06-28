@@ -1,7 +1,6 @@
 "use client"
 
 import { useThread } from "@/hooks/use-thread";
-
 import { Button } from "../ui/button";
 
 export default function PostCard() {

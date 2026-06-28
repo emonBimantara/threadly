@@ -1,36 +1,72 @@
 import { Comment } from "@/types/comment";
-import { formatDate, getRelativeTime } from "@/utils/date";
-import { ArrowDown, ArrowUp, User } from "lucide-react";
+import { getRelativeTime } from "@/utils/date";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 interface CommentProps {
-    comment: Comment
+    comment: Comment;
 }
 
 export default function CommentCard({ comment }: CommentProps) {
+    const voteCount =
+        comment.upVotesBy.length - comment.downVotesBy.length;
+
     return (
-        <div className="p-3">
-            <div className="flex gap-4 rounded-md border border-gray-300 bg-white p-5">
-                <img
-                    src={comment.owner.avatar}
-                    alt={comment.owner.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                />
+        <div className="px-3 py-2">
+            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+                <div className="flex items-start gap-4">
+                    <img
+                        src={comment.owner.avatar}
+                        alt={comment.owner.name}
+                        className="h-11 w-11 rounded-full object-cover"
+                    />
 
-                <div className="flex-1">
-                    <div className="mb-3 flex items-center gap-2">
-                        <p className="text-lg font-semibold">{comment.owner.name}</p>
-                        <p className="text-gray-400">{formatDate(comment.createdAt)}</p>
+                    <div className="flex-1">
+                        <div className="mb-4 flex items-center justify-between">
+                            <div>
+                                <h2 className="font-semibold text-gray-900">
+                                    {comment.owner.name}
+                                </h2>
+
+                                <p className="text-sm text-gray-500">
+                                    {getRelativeTime(comment.createdAt)}
+                                </p>
+                            </div>
+                        </div>
+
+                        <p className="whitespace-pre-line leading-7 text-gray-700">
+                            {comment.content}
+                        </p>
+
+                        <hr className="my-5 border-gray-100" />
+
+                        <div className="flex items-center gap-2">
+                            <button
+                                className="rounded-full p-2 transition hover:bg-green-50"
+                                aria-label="Upvote"
+                            >
+                                <ArrowUp
+                                    size={18}
+                                    className="text-gray-500 hover:text-green-600"
+                                />
+                            </button>
+
+                            <span className="min-w-6 text-center font-medium text-gray-700">
+                                {voteCount}
+                            </span>
+
+                            <button
+                                className="rounded-full p-2 transition hover:bg-red-50"
+                                aria-label="Downvote"
+                            >
+                                <ArrowDown
+                                    size={18}
+                                    className="text-gray-500 hover:text-red-600"
+                                />
+                            </button>
+                        </div>
                     </div>
-
-                    <p className="mb-4 text-[#464555]">{comment.content}</p>
-
-                    <button className="flex items-center gap-3 rounded-md bg-indigo-100 px-3 py-2 transition hover:bg-indigo-200">
-                        <ArrowUp size={18} className="text-gray-700 hover:text-green-600" />
-                        <span className="font-semibold text-black">0</span>
-                        <ArrowDown size={18} className="text-gray-700 hover:text-red-600" />
-                    </button>
                 </div>
             </div>
         </div>
-    )
+    );
 }

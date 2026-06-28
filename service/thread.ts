@@ -74,3 +74,32 @@ export async function createThread(
         throw error;
     }
 }
+
+export async function createComment(
+    threadId: string,
+    content: string
+): Promise<Thread> {
+    const token = localStorage.getItem("accessToken");
+    try {
+        const resp = await fetch(`${BASE_URL}/threads/${threadId}/comments`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+            },
+            body: JSON.stringify({ content })
+        })
+
+        const respData = await resp.json();
+        if (!resp.ok) {
+            throw new Error(respData.message);
+        }
+
+        return respData.data.comment;
+    } catch (error: any) {
+        console.error(error);
+        console.error("Failed to post comment:", error);
+        throw error;
+    }
+}

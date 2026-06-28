@@ -1,4 +1,4 @@
-import { createThread } from "@/service/thread";
+import { createComment, createThread } from "@/service/thread";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -8,6 +8,8 @@ export function useThread() {
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [body, setBody] = useState("");
+
+    const [content, setContent] = useState("")
 
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -27,6 +29,22 @@ export function useThread() {
         }
     };
 
+    const handleComment = async (threadId: string) => {
+        setIsLoading(true);
+        setErrorMsg("");
+
+        try {
+            await createComment(threadId, content)
+            setContent("");
+            router.refresh();
+        } catch (error) {
+            setErrorMsg("Failed to post comment.");
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return {
         title,
         setTitle,
@@ -34,8 +52,11 @@ export function useThread() {
         setCategory,
         body,
         setBody,
+        content,
+        setContent,
         isLoading,
         errorMsg,
         handlePostThread,
+        handleComment
     };
 }

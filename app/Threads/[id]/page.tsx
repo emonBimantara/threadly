@@ -21,7 +21,7 @@ export default async function ThreadDetail({ params }: ThreadDetailProps) {
 
             <div className="flex flex-col gap-3">
                 <DetailCard threadDetail={thread} />
-                <CommentForm />
+                <CommentForm threadId={thread.id} />
                 <div className="">
                     <h1 className="border-b border-gray-300 px-5 pb-4 text-2xl font-bold">
                         Comments ({thread.comments.length})
