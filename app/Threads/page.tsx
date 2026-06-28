@@ -5,7 +5,6 @@ import SearchBar from "@/components/ui/search-bar";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import CategoryBox from "@/components/threads/category-box";
-import Footer from "@/components/ui/footer";
 
 import { getAllThread } from "@/service/thread";
 import { getAllUser } from "@/service/user";
@@ -47,11 +46,14 @@ export default async function Threads() {
             </div>
 
             <div className="hidden lg:flex gap-6 p-6">
-                <aside className="w-100 space-y-5">
-                    <Button className="w-100 min-h-12 rounded-md text-base">
-                        <CirclePlus size={20} />
-                        Create New Thread
-                    </Button>
+                <aside className="w-100">
+                    <Link href="/Threads/create">
+                        <Button className="w-100 min-h-12 rounded-md text-base mb-5 cursor-pointer">
+                            <CirclePlus size={20} />
+                            Create New Thread
+                        </Button>
+                    </Link>
+
                     <CategoryBox categories={categories} />
                 </aside>
 
@@ -77,6 +79,18 @@ export default async function Threads() {
                     </div>
                 </main>
             </div>
+
+            <Link
+                href="/Threads/create"
+                className="fixed bottom-6 right-6 z-50 lg:hidden"
+            >
+                <Button
+                    size="icon"
+                    className="h-14 w-14 rounded-full shadow-xl transition-all duration-200 hover:scale-105 active:scale-95"
+                >
+                    <span className="text-3xl font-light leading-none">+</span>
+                </Button>
+            </Link>
         </div>
     );
 }
