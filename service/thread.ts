@@ -34,10 +34,6 @@ export async function getDetailThread(threadId: string): Promise<ThreadDetail> {
             }
         })
 
-        console.log(resp.status);
-console.log(resp.statusText);
-console.log(threadId);
-
         if (!resp.ok) {
             throw new Error(`HTTP Error: ${resp.status}`);
         }
@@ -46,6 +42,35 @@ console.log(threadId);
         return respData.data.detailThread
     } catch (error) {
         console.error("Failed to fetch threads:", error);
+        throw error;
+    }
+}
+
+export async function createThread(
+    title: string,
+    body: string,
+    category?: string
+): Promise<Thread> {
+    const token = localStorage.getItem("accessToken");
+    try {
+        const resp = await fetch(`${BASE_URL}/threads`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+            },
+            body: JSON.stringify({ title, body, category })
+        })
+
+        const respData = await resp.json();
+        if (!resp.ok) {
+            throw new Error(respData.message);
+        }
+
+        return respData.data.thread;
+    } catch (error) {
+        console.error("Failed to post threads:", error);
         throw error;
     }
 }

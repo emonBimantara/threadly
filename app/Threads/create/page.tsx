@@ -1,5 +1,5 @@
 import GuideBox from "@/components/threads/guide-box";
-import PostCard from "@/components/threads/post-card";
+import PostCard from "@/components/threads/thread-form";
 import Navbar from "@/components/ui/navbar";
 
 export default function CreateThread(){
