@@ -1,8 +1,7 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const token = localStorage.getItem("accessToken");
-
 export async function upVoteThread(threadId: string) {
+    const token = localStorage.getItem("accessToken");
     try {
         const resp = await fetch(`${BASE_URL}/threads/${threadId}/up-vote`, {
             method: "POST",
@@ -26,6 +25,7 @@ export async function upVoteThread(threadId: string) {
 }
 
 export async function downVoteThread(threadId: string) {
+    const token = localStorage.getItem("accessToken");
     try {
         const resp = await fetch(`${BASE_URL}/threads/${threadId}/down-vote`, {
             method: "POST",
@@ -49,6 +49,7 @@ export async function downVoteThread(threadId: string) {
 }
 
 export async function neutralVoteThread(threadId: string) {
+    const token = localStorage.getItem("accessToken");
     try {
         const resp = await fetch(`${BASE_URL}/threads/${threadId}/neutral-vote`, {
             method: "POST",

@@ -1,5 +1,9 @@
+"use client"
+
 import { ThreadWithOwner } from "@/types/thread-owner";
 import { getRelativeTime } from "@/utils/date";
+import { useThread } from "@/hooks/use-thread";
+
 import {
     EllipsisVertical,
     ArrowUp,
@@ -12,6 +16,11 @@ interface ThreadCardProps {
 }
 
 export default function ThreadCard({ threadsData }: ThreadCardProps) {
+    const {
+        handleUpVote,
+        handleDownVote,
+    } = useThread();
+
     return (
         <div className="rounded-md border border-gray-300 bg-white p-4 transition-all hover:border-gray-400 hover:shadow-sm mb-5">
             <div>
@@ -56,23 +65,45 @@ export default function ThreadCard({ threadsData }: ThreadCardProps) {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <button className="flex items-center gap-3 rounded-md bg-indigo-100 px-3 py-2 transition hover:bg-indigo-200">
-                        <ArrowUp
-                            size={18}
-                            className="text-gray-700 hover:text-green-600"
-                        />
+                    <div className="flex items-center rounded-md bg-indigo-100 px-3 py-2">
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleUpVote(threadsData.id);
+                            }}
+                            className="rounded p-1 transition hover:bg-indigo-200"
+                        >
+                            <ArrowUp
+                                size={18}
+                                className="text-gray-700 hover:text-green-600"
+                            />
+                        </button>
 
-                        <span className="font-semibold text-black">{threadsData.upVotesBy.length}</span>
+                        <span className="px-2 font-semibold text-black">
+                            {threadsData.upVotesBy.length}
+                        </span>
 
-                        <ArrowDown
-                            size={18}
-                            className="text-gray-700 hover:text-red-600"
-                        />
-                    </button>
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleDownVote(threadsData.id);
+                            }}
+                            className="rounded p-1 transition hover:bg-indigo-200"
+                        >
+                            <ArrowDown
+                                size={18}
+                                className="text-gray-700 hover:text-red-600"
+                            />
+                        </button>
+                    </div>
 
                     <button className="flex items-center gap-2 rounded-md px-3 py-2 transition hover:bg-gray-100">
                         <MessageSquare size={18} />
-                        <span className="font-medium">{threadsData.totalComments}</span>
+                        <span className="font-medium">
+                            {threadsData.totalComments}
+                        </span>
                     </button>
                 </div>
             </div>
