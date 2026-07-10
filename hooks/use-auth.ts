@@ -62,6 +62,13 @@ export function useAuth() {
         }
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem("accessToken");
+
+        router.push("/Login");
+        router.refresh();
+    };
+
     return {
         username,
         setUsername,
@@ -73,6 +80,7 @@ export function useAuth() {
         errorMsg,
         successMsg,
         handleRegister,
-        handleLogin
+        handleLogin,
+        handleLogout
     }
 }
