@@ -1,5 +1,5 @@
 import { createComment, createThread } from "@/service/thread";
-import { downVoteThread, upVoteThread } from "@/service/vote";
+import { downVoteThread, neutralVoteThread, upVoteThread } from "@/service/vote";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { threadId } from "worker_threads";
@@ -76,6 +76,7 @@ export function useThread() {
             setIsLoading(false);
         }
     }
+
 
     return {
         title,

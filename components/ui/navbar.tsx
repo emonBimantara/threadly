@@ -1,33 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { MenuIcon, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import SearchBar from "./search-bar";
 import { User } from "@/types/user";
 import { getOwnProfile } from "@/service/user";
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
     const [userIcon, setUserIcon] = useState<User | null>(null);
 
-    const pathname = usePathname();
 
     useEffect(() => {
         getOwnProfile()
             .then(setUserIcon)
             .catch(console.error);
     }, []);
-
-    const navItem = (href: string) =>
-        `relative pb-2 text-gray-700 transition-colors duration-300 hover:text-black
-    after:absolute after:left-0 after:bottom-0 after:h-[2px]
-    after:bg-black after:transition-all after:duration-300 after:content-['']
-    ${pathname === href
-            ? "after:w-full text-black"
-            : "after:w-0 hover:after:w-full"
-        }`;
 
     return (
         <nav className="flex justify-between items-center border-b-4 border-gray-100 bg-white px-6 py-4 lg:py-2">
@@ -45,27 +32,6 @@ export default function Navbar() {
                 </h1>
             </Link>
 
-            <button
-                onClick={() => setIsOpen(true)}
-                className="lg:hidden"
-            >
-                <MenuIcon size={30} />
-            </button>
-
-            <div className="hidden lg:flex items-center gap-7 text-lg">
-                <Link href="/Threads" className={navItem("/Threads")}>
-                    Threads
-                </Link>
-
-                <Link href="/leaderboards" className={navItem("/leaderboards")}>
-                    Leaderboards
-                </Link>
-
-                <Link href="/users" className={navItem("/users")}>
-                    Users
-                </Link>
-            </div>
-
             <div className="hidden lg:flex items-center gap-2">
                 <SearchBar />
 
@@ -78,64 +44,6 @@ export default function Navbar() {
                 ) : (
                     <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse" />
                 )}
-            </div>
-
-            {isOpen && (
-                <div
-                    className="fixed inset-0 z-40 bg-black/40"
-                    onClick={() => setIsOpen(false)}
-                />
-            )}
-
-            <div
-                className={`fixed top-0 right-0 z-50 h-screen w-64 bg-white shadow-lg transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"
-                    }`}
-            >
-                <div className="flex items-center justify-between border-b p-5">
-                    <h2 className="text-xl font-bold">Menu</h2>
-
-                    <button onClick={() => setIsOpen(false)}>
-                        <X />
-                    </button>
-                </div>
-
-                <div className="flex flex-col gap-5 p-5 text-lg">
-                    <Link
-                        href="/Threads"
-                        onClick={() => setIsOpen(false)}
-                        className={
-                            pathname === "/Threads"
-                                ? "font-semibold text-indigo-600"
-                                : "hover:text-indigo-600"
-                        }
-                    >
-                        Threads
-                    </Link>
-
-                    <Link
-                        href="/leaderboards"
-                        onClick={() => setIsOpen(false)}
-                        className={
-                            pathname === "/leaderboards"
-                                ? "font-semibold text-indigo-600"
-                                : "hover:text-indigo-600"
-                        }
-                    >
-                        Leaderboards
-                    </Link>
-
-                    <Link
-                        href="/users"
-                        onClick={() => setIsOpen(false)}
-                        className={
-                            pathname === "/users"
-                                ? "font-semibold text-indigo-600"
-                                : "hover:text-indigo-600"
-                        }
-                    >
-                        Users
-                    </Link>
-                </div>
             </div>
         </nav>
     );
