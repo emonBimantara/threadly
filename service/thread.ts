@@ -6,6 +6,7 @@ export async function getAllThread(): Promise<Thread[]> {
     try {
         const resp = await fetch(`${BASE_URL}/threads`, {
             method: "GET",
+            cache: "no-store",
             headers: {
                 Accept: 'application/json',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
@@ -28,6 +29,7 @@ export async function getDetailThread(threadId: string): Promise<ThreadDetail> {
     try {
         const resp = await fetch(`${BASE_URL}/threads/${threadId}`, {
             method: "GET",
+            cache: "no-store",
             headers: {
                 Accept: 'application/json',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'

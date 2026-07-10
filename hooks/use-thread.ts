@@ -23,6 +23,7 @@ export function useThread() {
         try {
             await createThread(title, body, category);
             router.push("/Threads");
+            router.refresh();
         } catch (error) {
             setErrorMsg("Failed to publish thread.");
             console.error(error);

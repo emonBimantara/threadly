@@ -10,7 +10,10 @@ import { getAllThread } from "@/service/thread";
 import { getAllUser } from "@/service/user";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function Threads() {
+    
     const threads = await getAllThread()
     const users = await getAllUser()
 
