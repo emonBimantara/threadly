@@ -55,10 +55,15 @@ export function useAuth() {
             router.push('/Threads')
             router.refresh()
         } catch (error) {
-            setErrorMsg('Network error occurred while logging in. Please try again.')
-            console.error(error)
+            if (error instanceof Error) {
+                setErrorMsg(error.message);
+            } else {
+                setErrorMsg("An unexpected error occurred.");
+            }
+
+            console.error(error);
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
     }
 
