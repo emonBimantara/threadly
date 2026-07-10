@@ -14,32 +14,46 @@ export function useAuth() {
     const [successMsg, setSuccessMsg] = useState('')
 
     const handleRegister = async (callbackSuccess: () => void) => {
-        setIsLoading(true)
-        setErrorMsg('')
-        setSuccessMsg('')
+        setIsLoading(true);
+        setErrorMsg("");
+        setSuccessMsg("");
 
         try {
             await register({
                 name: username,
                 email,
-                password
+                password,
             });
 
-            setSuccessMsg('Account created successfully. Please sign in to continue.');
+            setSuccessMsg("Account created successfully. Please sign in to continue.");
 
-            setUsername('')
-            setEmail('')
-            setPassword('')
+            setUsername("");
+            setEmail("");
+            setPassword("");
 
-            callbackSuccess()
-
+            callbackSuccess();
         } catch (error) {
-            setErrorMsg('An error occurred during registration.')
-            console.error(error)
+            if (error instanceof Error) {
+                if (error instanceof Error) {
+                    const message = error.message.toLowerCase();
+
+                    if (message.includes("email") && message.includes("taken")) {
+                        setErrorMsg("This email is already registered.");
+                    } else {
+                        setErrorMsg(error.message);
+                    }
+                } else {
+                    setErrorMsg("An unexpected error occurred.");
+                }
+            } else {
+                setErrorMsg("An unexpected error occurred.");
+            }
+
+            console.error(error);
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
+    };
 
     const handleLogin = async () => {
         setIsLoading(true)
