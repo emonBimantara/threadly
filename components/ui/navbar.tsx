@@ -11,7 +11,8 @@ export default function Navbar() {
     const [userIcon, setUserIcon] = useState<User | null>(null);
     const [isOpen, setIsOpen] = useState(false);
 
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const desktopDropdownRef = useRef<HTMLDivElement>(null);
+    const mobileDropdownRef = useRef<HTMLDivElement>(null);
 
     const { handleLogout } = useAuth();
 
@@ -23,10 +24,12 @@ export default function Navbar() {
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
+            const target = event.target as Node;
+
+            const clickedInsideDesktop = desktopDropdownRef.current?.contains(target);
+            const clickedInsideMobile = mobileDropdownRef.current?.contains(target);
+
+            if (!clickedInsideDesktop && !clickedInsideMobile) {
                 setIsOpen(false);
             }
         }
@@ -61,7 +64,7 @@ export default function Navbar() {
 
                     {userIcon && (
                         <div
-                            ref={dropdownRef}
+                            ref={desktopDropdownRef}
                             className="relative"
                         >
                             <button
@@ -101,7 +104,7 @@ export default function Navbar() {
                 <div className="lg:hidden">
                     {userIcon && (
                         <div
-                            ref={dropdownRef}
+                            ref={mobileDropdownRef}
                             className="relative"
                         >
                             <button
