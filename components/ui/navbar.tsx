@@ -43,7 +43,7 @@ export default function Navbar() {
             <div className="flex items-center justify-between px-6 py-4 lg:py-2">
 
                 <Link
-                    href="/"
+                    href="/Threads"
                     className="flex items-center gap-2"
                 >
                     <img

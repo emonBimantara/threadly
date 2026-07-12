@@ -1,8 +1,7 @@
 import { createComment, createThread } from "@/service/thread";
-import { downVoteThread, neutralVoteThread, upVoteThread } from "@/service/vote";
+import { downVoteComment, downVoteThread, upVoteComment, upVoteThread } from "@/service/vote";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { threadId } from "worker_threads";
 
 export function useThread() {
     const router = useRouter();
@@ -78,6 +77,36 @@ export function useThread() {
         }
     }
 
+    const handleUpComment = async (threadId: string, commentId: string) => {
+         setIsLoading(true);
+        setErrorMsg("");
+
+        try {
+            await upVoteComment(threadId, commentId)
+            router.refresh();
+        } catch (error) {
+            setErrorMsg("Failed to up vote comment.");
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const handleDownComment = async (threadId: string, commentId: string) => {
+         setIsLoading(true);
+        setErrorMsg("");
+
+        try {
+            await downVoteComment(threadId, commentId)
+            router.refresh();
+        } catch (error) {
+            setErrorMsg("Failed to down vote comment.");
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
 
     return {
         title,
@@ -93,6 +122,8 @@ export function useThread() {
         handlePostThread,
         handleComment,
         handleUpVote,
-        handleDownVote
+        handleDownVote,
+        handleUpComment,
+        handleDownComment
     };
 }

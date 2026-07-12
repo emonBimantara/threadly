@@ -48,10 +48,11 @@ export async function downVoteThread(threadId: string) {
     }
 }
 
-export async function neutralVoteThread(threadId: string) {
+export async function upVoteComment(threadId: string, commentId: string) {
     const token = localStorage.getItem("accessToken");
+
     try {
-        const resp = await fetch(`${BASE_URL}/threads/${threadId}/neutral-vote`, {
+        const resp = await fetch(`${BASE_URL}/threads/${threadId}/comments/${commentId}/up-vote`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -67,7 +68,32 @@ export async function neutralVoteThread(threadId: string) {
 
         return respData.data.vote
     } catch (error) {
-        console.error("Failed to netural vote threads:", error);
+        console.error("Failed to up vote comment:", error);
+        throw error;
+    }
+}
+
+export async function downVoteComment(threadId: string, commentId: string) {
+    const token = localStorage.getItem("accessToken");
+
+    try {
+        const resp = await fetch(`${BASE_URL}/threads/${threadId}/comments/${commentId}/down-vote`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+            }
+        })
+
+        const respData = await resp.json()
+        if (!resp.ok) {
+            throw new Error(respData.message);
+        }
+
+        return respData.data.vote
+    } catch (error) {
+        console.error("Failed to down vote comment:", error);
         throw error;
     }
 }

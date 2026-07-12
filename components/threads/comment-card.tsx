@@ -1,14 +1,22 @@
+"use client"
+
+import { useThread } from "@/hooks/use-thread";
 import { Comment } from "@/types/comment";
 import { getRelativeTime } from "@/utils/date";
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 interface CommentProps {
     comment: Comment;
+    threadId: string
 }
 
-export default function CommentCard({ comment }: CommentProps) {
-    const voteCount =
-        comment.upVotesBy.length - comment.downVotesBy.length;
+export default function CommentCard({ comment, threadId }: CommentProps) {
+    const { 
+        handleUpComment, 
+        handleDownComment
+    } = useThread();
+
+    const voteCount = comment.upVotesBy.length
 
     return (
         <div className="px-3 py-2">
@@ -41,7 +49,12 @@ export default function CommentCard({ comment }: CommentProps) {
 
                         <div className="flex items-center gap-2">
                             <button
-                                className="rounded-full p-2 transition hover:bg-green-50"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleUpComment(threadId, comment.id);
+                                }}
+                                className="rounded-full p-2 transition hover:bg-green-50 disabled:opacity-50"
                                 aria-label="Upvote"
                             >
                                 <ArrowUp
@@ -55,7 +68,12 @@ export default function CommentCard({ comment }: CommentProps) {
                             </span>
 
                             <button
-                                className="rounded-full p-2 transition hover:bg-red-50"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleDownComment(threadId, comment.id);
+                                }}
+                                className="rounded-full p-2 transition hover:bg-red-50 disabled:opacity-50"
                                 aria-label="Downvote"
                             >
                                 <ArrowDown

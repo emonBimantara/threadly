@@ -31,6 +31,7 @@ export default async function ThreadDetail({ params }: ThreadDetailProps) {
                         <CommentCard
                             key={comment.id}
                             comment={comment}
+                            threadId={id}
                         />
                     ))}
                 </div>
